@@ -13,13 +13,13 @@ class Solution:
     # 方法2：使用队列，超时
     # 队列不支持在常量时间内完成 搜索，删除，插入
     def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
-    queue = deque()
-    for num in nums:
-        if num in queue:
-            return True
-        else:
-            queue.append(num)
-            if len(queue) > k:
-                queue.popleft()
-    return False
+        queue = deque()
+        for num in nums:
+            if num in queue:
+                return True
+            else:
+                queue.append(num)
+                if len(queue) > k:
+                    queue.popleft()
+        return False
 
