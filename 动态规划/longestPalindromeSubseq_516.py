@@ -26,7 +26,7 @@ class Solution:
     # 动态规划
     # 找到状态和选择 -> 明确 dp 数组/函数的定义 -> 寻找状态之间的关系。
     # dp 数组要便于使用归纳法，使得可以由已经计算出来的dp状态计算dp[n]
-    # dp[i][j]定义为以s[i : j]的最长回文子序列长度
+    # dp[i][j]定义为s[i : j]的最长回文子序列长度
     def longestPalindromeSubseq(self, s: str) -> int:
         n = len(s)
         dp = [[0] * len(s) for i in range(n)]

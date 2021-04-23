@@ -13,16 +13,18 @@
 #      偷窃到的最高金额 = 1 + 3 = 4 。
 # 示例 2：
 
-# 输入：[2,7,9,3,1]
-# 输出：12
-# 解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
-#      偷窃到的最高金额 = 2 + 9 + 1 = 12 。
- 
+# class Solution {
+#     public int rob(int[] nums) {
+#         int pre = 0, cur = 0, tmp;
+#         for(int num : nums) {
+#             tmp = cur;
+#             cur = Math.max(pre + num, cur);
+#             pre = tmp;
+#         }
+#         return cur;
+#     }
+# }
 
-# 提示：
-
-# 0 <= nums.length <= 100
-# 0 <= nums[i] <= 400
 
 
 class Solution:
@@ -34,13 +36,13 @@ class Solution:
         #      dp[i]为nums[i, ... , len(nums) - 1]房屋区域能盗窃的最大金额
         
         # 1. 没有状态压缩，直接使用一个一维dp数组
-        # n = len(nums)
-        # if n == 0: return 0
-        # dp = [0 for i in range(n + 1)]
-        # dp[n], dp[n - 1] = 0, nums[-1]
-        # for i in range(n - 2, -1, -1):
-        #     dp[i] = max(dp[i + 2] + nums[i], dp[i + 1]) # 抢/不抢当前房屋两种选择
-        # return dp[0]
+        n = len(nums)
+        if n == 0: return 0
+        dp = [0 for i in range(n + 1)]
+        dp[n], dp[n - 1] = 0, nums[-1]
+        for i in range(n - 2, -1, -1):
+            dp[i] = max(dp[i + 2] + nums[i], dp[i + 1]) # 抢/不抢当前房屋两种选择
+        return dp[0]
 
         # 2. 压缩状态： 因为只需要前两个状态的结果，只保存前两个结果就可以
         n = len(nums)

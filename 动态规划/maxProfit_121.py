@@ -30,14 +30,16 @@ class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
         if n == 0 or n == 1: return 0
-        dp_0, dp_1 =  0, -prices[0] # 前一天不持有股票的最大获利/持有股票的最大获利
+        
+        # 1. 定义状态，dp_0, dp_1分别是当天不持有股票的最大获利、持有股票的最大获利
+
+        dp_0, dp_1 =  0, -prices[0] # 当天不持有股票的最大获利/持有股票的最大获利
         for i in range(1, n):
             i_not_have = max(dp_1 + prices[i], dp_0) # 第i天不持有股票的最大获利：两种情况取最大 
                                                      # (1) 前一天不持有 （2）前一天持有，第i天卖出
             i_have = b = max(dp_1, - prices[i]) # 第i天持有股票的最大获利: 两种情况取最大 
                                                 # (1) 前一天持有 （2）前一天不持有，第i天买进（因为总共只能买进卖出1次，所以前一天的利润一定是为0！！！这里不能使用dp_0）
             dp_0, dp_1 = i_not_have, i_have
-        return i_not_have
 
     # 方法2. 在【历史最低点】买入
     # 在【历史最低点】后找到prices[i] - min_price的最大值即为最大利润

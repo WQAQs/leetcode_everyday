@@ -31,6 +31,45 @@
 
 ### 思路解析：https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/shou-ba-shou-shua-shu-zu-ti-mu/koko-tou-xiang-jiao
 
+import heapq
+class Solution:
 
+    ## 理解题目： 
+    ## （1）题目要求的是啥？
+    # 提炼要求，就是要计算H小时内要吃完香蕉的最小速度
+
+    ## （2）限制条件？
+    # 每个小时只能吃一堆，若一堆的香蕉数目小于speed， 1小时内就能把选的这堆吃完，否则剩下的下一个小时再吃
+
+    ## （3）怎么计算能否吃完？
+    # 计算吃完所有香蕉的时间t，若 t <= H , 则能按要求吃完，否则不能
+    ## 怎么计算吃完所有香蕉的时间t？
+    # 计算吃完每一堆香蕉的时间，然后相加得到总时间
+
+## 1. 暴力解法
+    ## O(n^2) ，最大只能处理n=1e4的数据规模
+    ## 吃香蕉最小速度1，最大速度max(piles),从小到大遍历[0, max(piles)]，第一个找到能吃完香蕉的速度（即左边界）即为结果
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        for speed in range(1, heapq.nlargest(1, piles)[0] + 1): # 注意！！ heapq.nlargest(1, piles)返回的是一个list
+            if can_finish(speed, piles):
+                return speed
+        return speed
+
+## 2. 二分查找
+    ## 把1中暴力解法的for循环线性遍历改为二分查找
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        def can_finish(speed, piles):
+            time = 0
+            for n in piles:
+                time += n // speed + (1 if n % speed > 0 else 0)
+            return time <= h
+        left, right = 1, heapq.nlargest(1, piles)[0] + 1 # 搜索范围[left, right)
+        while left < right:   # left == right 搜索范围内无值，退出循环
+            mid = left + (right - left) // 2
+            if can_finish(mid, piles):
+                right = mid   # 收缩右侧边界到符合要求的点（有效点）
+            else: 
+                left = mid + 1  # 不断右移，寻找左边界点
+        return left
+        
